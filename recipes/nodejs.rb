@@ -38,12 +38,6 @@ windows_path node['nodejs']['home'] do
   action [:remove, :add]
 end
 
-# Ensure Npm's home directory is global, and avoid %AppData%
-powershell_script 'set_npm_prefix' do
-  code "npm config set prefix #{node['nodejs']['npm']['home']}"
-  action :run
-end
-
 # Add Npm's home directory to the Windows path, and to Ruby's ENV
 windows_path node['nodejs']['npm']['home'] do
   action [:remove, :add]

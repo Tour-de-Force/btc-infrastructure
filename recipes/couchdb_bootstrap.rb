@@ -33,7 +33,11 @@ end
 # TODO: Figure out better npm path solution.
 # The not_if should really just be `Get-Command couchdb-bootstrap`
 powershell_script 'install_couchdb_bootstrap' do
-  code 'npm install -g --silent couchdb-bootstrap'
+  # See nodejs_deploy.rb for a longer explanation of this insanity.
+  code "$env:USERPROFILE = \"#{node['nodejs']['sysprof']}\";" \
+  "$env:NPM_CONFIG_PREFIX = \"#{node['nodejs']['npm']['home']}\";" \
+  "$env:NPM_CONFIG_CACHE = \"#{node['nodejs']['npm']['cache']}\";" \
+  "npm install -g --loglevel error couchdb-bootstrap;"
   cwd "#{work}/couchdb"
   action :run
   not_if 'Get-Command couchdb-bootstrap'
