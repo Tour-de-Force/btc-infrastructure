@@ -43,3 +43,12 @@ normal['nodejs']['display_name'] = 'Node.js'
 
 # Npm (global modules) home directory
 normal['nodejs']['npm']['home'] = 'C:\\npm'
+
+# Npm (global modules) cache directory
+normal['nodejs']['npm']['cache'] = 'C:\\npm-cache'
+
+# Somewhere outside System32 for the Workgroup\System user profile
+# We set this as an environment variable before running npm.
+# Being inside System32 makes node-gyp's .node-gyp folder unusable by itself.
+# This whole situation is bizzare, but that's how it is.
+normal['nodejs']['sysprof'] = 'C:\\sysprof'

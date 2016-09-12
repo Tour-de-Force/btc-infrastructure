@@ -100,8 +100,24 @@ if app && app['deploy'] == true
   # Define the powershell script to install our app server tarball. However,
   # do nothing! If the tarball changes (below), it will notify us to install
   # the changes. In addition, when the install completes, run the service.
+
+  # We are doing the following shady things to make npm and Chef happy:
+  # 1) Setting the env variable USERPROFILE for the current (Workgroup\System) user to
+  # something outside System32. It makes no sense for it to be in there and makes node-gyp
+  # sad when it tries to find things in its own .node-gyp folder.
+  # 2) Just setting the npm prefix and cache as environment variables to ensure they are
+  # found and respected as the highest precedence values.
+  # 3) Forcing the script to exit with a success code. The node-gyp build currently fails
+  # anyway, but it is an optional dependency using it (leveldown from PouchDB). When the
+  # node-gyp build fails node keeps going but ultimately returns the nonzero (1) status
+  # code that msbuild.exe (which it used) returned. This is not what we want, so we just need
+  # to force a success code until (if) we fix that optional build.
   powershell_script 'install_app' do
-    code "npm install -g --loglevel error #{app_name}.tgz"
+    code "$env:USERPROFILE = \"#{node['nodejs']['sysprof']}\";" \
+    "$env:NPM_CONFIG_PREFIX = \"#{node['nodejs']['npm']['home']}\";" \
+    "$env:NPM_CONFIG_CACHE = \"#{node['nodejs']['npm']['cache']}\";" \
+    "npm install -g --loglevel error #{app_name}.tgz;" \
+    "exit 0;"
     cwd Chef::Config[:file_cache_path]
     action :run
   end
