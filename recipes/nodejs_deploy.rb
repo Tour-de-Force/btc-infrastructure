@@ -116,8 +116,7 @@ if app && app['deploy'] == true
     code "$env:USERPROFILE = \"#{node['nodejs']['sysprof']}\";" \
     "$env:NPM_CONFIG_PREFIX = \"#{node['nodejs']['npm']['home']}\";" \
     "$env:NPM_CONFIG_CACHE = \"#{node['nodejs']['npm']['cache']}\";" \
-    "npm install -g --loglevel error #{app_name}.tgz;" \
-    "exit 0;"
+    "npm install -g --loglevel error #{app_name}.tgz;"
     cwd Chef::Config[:file_cache_path]
     action :run
   end
