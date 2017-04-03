@@ -37,27 +37,15 @@ domain = false
 if stack_name.include? 'dev'
   instance = search('aws_opsworks_instance', "layer_ids:#{id}").first
   domain = instance['private_ip'] if instance
-# The production and staging stacks manage multiple database servers behind
-# an elastic load balancer. Connect by the ELB's dns name.
-else
-  elb = search('aws_opsworks_elastic_load_balancer', "layer_id:#{id}").first
-  domain = elb['dns_name'] if elb
 end
 
-# If there is a database server, set SERVER_COUCH_DOMAIN. Otherwise, unset
-# the variable. Unsetting the variable will cause the api service
+# If there is a database server, set SERVER_COUCH_DOMAIN.
 if domain
   log "database server domain: #{domain}"
 
   env 'SERVER_COUCH_DOMAIN' do
     value domain
     action :create
-  end
-else
-  log 'database server domain: NA'
-
-  env 'SERVER_COUCH_DOMAIN' do
-    action :delete
   end
 end
 
