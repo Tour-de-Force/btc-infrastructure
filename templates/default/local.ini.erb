@@ -5,7 +5,6 @@
 ; overwritten on server upgrade.
 
 [httpd]
-port = <%= node.couchdb.port %>
 bind_address = <%= node.couchdb.bind_address %>
 enable_cors = true
 
@@ -19,3 +18,13 @@ origins = *
 <% node.admin_users.each do |admin_user| -%>
 <%= admin_user[:username] %> = <%= admin_user[:password] %>
 <% end -%>
+
+[daemons]
+httpsd = {couch_httpd, start_link, [https]}
+
+[ssl]
+; These paths have to be entered in this non-standard way, so we hard-code
+; them in the Chef script.
+cert_file = C:/Certificates/server.cert
+key_file = C:/Certificates/server.key
+port = <%= node.couchdb.port %>

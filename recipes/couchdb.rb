@@ -48,9 +48,9 @@ end
 
 # Allow incoming HTTP on Couch's default port
 netsh_firewall_rule 'Apache CouchDB' do
-  description 'Allow HTTP connections to CouchDB on TCP port 5984'
+  description 'Allow HTTPS connections to CouchDB on TCP port 6984'
   dir :in
-  localport '5984'
+  localport '6984'
   protocol :tcp
   action :allow
 end
