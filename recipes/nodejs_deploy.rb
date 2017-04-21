@@ -28,9 +28,9 @@ if app && app['deploy'] == true
 
   # Allow incoming HTTP on Couch's default port
   netsh_firewall_rule 'Node.js App Server' do
-    description 'Allow HTTP connections to the App Server on TCP port 80'
+    description 'Allow HTTPS connections to the App Server on TCP port 8443'
     dir :in
-    localport '80'
+    localport '8443'
     protocol :tcp
     action :allow
   end

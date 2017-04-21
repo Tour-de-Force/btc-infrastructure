@@ -25,5 +25,8 @@ normal['server']['dir'] = 'C:\Server'
 # <> Directory in which to perform other work related to chef
 normal['work']['dir'] = 'C:\Work'
 
+# <> Directory in which to store certificate related files
+normal['certificates']['dir'] = 'C:\Certificates'
+
 # <> Array of admin users as {:username, :password} hashes
 default['admin_users'] = []

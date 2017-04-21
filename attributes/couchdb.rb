@@ -41,4 +41,4 @@ normal['couchdb']['home'] = 'C:\CouchDB'
 normal['couchdb']['bind_address'] = '0.0.0.0'
 
 # <> Defines the IP address by which CouchDB will be accessible.
-normal['couchdb']['port'] = 5984
+normal['couchdb']['port'] = 6984
